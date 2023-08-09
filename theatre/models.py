@@ -47,3 +47,6 @@ class Performance(models.Model):
     play = models.ForeignKey(Play, on_delete=models.CASCADE, related_name="performance")
     theatre_hall = models.ForeignKey(TheatreHall, on_delete=models.CASCADE, related_name="performance")
     show_time = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.play.title} in theatre hall: {self.theatre_hall.id}"
