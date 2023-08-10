@@ -59,19 +59,16 @@ class PlayViewSet(viewsets.ModelViewSet):
         return queryset.distinct()
 
     def get_serializer_class(self):
-        serializer_class = self.serializer_class
-
         if self.action == "list":
-            serializer_class = PlayListSerializer
+            return PlayListSerializer
+        if self.action == "retrieve":
+            return PlayDetailSerializer
 
-        elif self.action == "retrieve":
-            serializer_class = PlayDetailSerializer
-
-        return serializer_class
+        return PlaySerializer
 
 
 class PerformanceViewSet(viewsets.ModelViewSet):
-    queryset = Performance.objects.all()
+    queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer
 
     def get_queryset(self):
@@ -83,15 +80,12 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         return queryset
 
     def get_serializer_class(self):
-        serializer_class = self.serializer_class
-
         if self.action == "list":
-            serializer_class = PerformanceListSerializer
+            return PerformanceListSerializer
+        if self.action == "retrieve":
+            return PerformanceDetailSerializer
 
-        elif self.action == "retrieve":
-            serializer_class = PerformanceDetailSerializer
-
-        return serializer_class
+        return PerformanceSerializer
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
