@@ -36,10 +36,10 @@ class Actor(models.Model):
 
 
 class Play(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    genres = models.ManyToManyField(Genre, blank=True)
-    actors = models.ManyToManyField(Actor, blank=True)
+    genres = models.ManyToManyField(Genre, related_name="plays")
+    actors = models.ManyToManyField(Actor, related_name="plays")
 
     class Meta:
         ordering = ["title"]
@@ -62,7 +62,7 @@ class Performance(models.Model):
     )
 
     def __str__(self):
-        return f"{self.play.title} in theatre hall: {self.theatre_hall.id}"
+        return f"{self.play.title} {str(self.show_time)}"
 
 
 class Reservation(models.Model):
