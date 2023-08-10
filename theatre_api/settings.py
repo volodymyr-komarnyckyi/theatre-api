@@ -20,15 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = [
+SECRET_KEY = (
     "django-insecure-ftf$p^a=7q%7-hpl=rnx%ig&2)kk12n&4-@(_-4lza-em18j5l"
-]
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Application definition
 
@@ -41,7 +44,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
-    "rest_framework.authtoken",
     "drf_spectacular",
 
     "theatre",
@@ -63,7 +65,7 @@ ROOT_URLCONF = "theatre_api.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -100,20 +102,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation."
-                "MinimumLengthValidator",
+        "MinimumLengthValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation."
-                "CommonPasswordValidator",
+        "CommonPasswordValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation."
-                "NumericPasswordValidator",
+        "NumericPasswordValidator",
     },
 ]
 
 AUTH_USER_MODEL = "user.User"
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -132,8 +133,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -150,6 +151,9 @@ REST_FRAMEWORK = {
         "anon": "10/minute",
         "user": "30/minute"
     },
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
 }
 
 SPECTACULAR_SETTINGS = {
