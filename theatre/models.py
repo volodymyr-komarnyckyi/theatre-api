@@ -3,8 +3,21 @@ from django.db import models
 from rest_framework.exceptions import ValidationError
 
 
-class Genre(models.Model):
+class TheatreHall(models.Model):
     name = models.CharField(max_length=255)
+    rows = models.PositiveIntegerField()
+    seats_in_row = models.PositiveIntegerField()
+
+    @property
+    def capacity(self):
+        return self.rows * self.seats_in_row
+
+    def __str__(self):
+        return self.name
+
+
+class Genre(models.Model):
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
@@ -28,27 +41,17 @@ class Play(models.Model):
     genres = models.ManyToManyField(Genre, blank=True)
     actors = models.ManyToManyField(Actor, blank=True)
 
+    class Meta:
+        ordering = ["title"]
+
     def __str__(self):
         return self.title
 
 
-class TheatreHall(models.Model):
-    name = models.CharField(max_length=255)
-    rows = models.PositiveIntegerField()
-    seats_in_row = models.PositiveIntegerField()
-
-    @property
-    def capacity(self):
-        return self.rows * self.seats_in_row
-
-    def __str__(self):
-        return self.name
-
-
 class Performance(models.Model):
+    show_time = models.DateTimeField()
     play = models.ForeignKey(Play, on_delete=models.CASCADE, related_name="performance")
     theatre_hall = models.ForeignKey(TheatreHall, on_delete=models.CASCADE, related_name="performance")
-    show_time = models.DateTimeField()
 
     def __str__(self):
         return f"{self.play.title} in theatre hall: {self.theatre_hall.id}"
@@ -82,9 +85,9 @@ class Ticket(models.Model):
             raise ValidationError(
                 {
                     "seat": f"seat must be "
-                    f"in available range: "
-                    f"(1, {self.performance.theatre_hall.seats_in_row}), not "
-                    f"{self.seat}"
+                            f"in available range: "
+                            f"(1, {self.performance.theatre_hall.seats_in_row}), not "
+                            f"{self.seat}"
                 }
             )
 
