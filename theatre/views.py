@@ -1,5 +1,6 @@
 from django.db.models import F, Count
 from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 
 from theatre.models import Genre, Actor, Play, TheatreHall, Performance, Reservation
@@ -22,24 +23,28 @@ from theatre.serializers import (
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
 
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
 
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.prefetch_related("genres", "actors")
     serializer_class = PlaySerializer
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
     @staticmethod
@@ -78,6 +83,7 @@ class PlayViewSet(viewsets.ModelViewSet):
 class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
     def get_queryset(self):
@@ -113,6 +119,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     pagination_class = ReservationPagination
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
     def get_queryset(self):
