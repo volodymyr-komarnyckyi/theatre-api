@@ -50,8 +50,16 @@ class Play(models.Model):
 
 class Performance(models.Model):
     show_time = models.DateTimeField()
-    play = models.ForeignKey(Play, on_delete=models.CASCADE, related_name="performance")
-    theatre_hall = models.ForeignKey(TheatreHall, on_delete=models.CASCADE, related_name="performance")
+    play = models.ForeignKey(
+        Play,
+        on_delete=models.CASCADE,
+        related_name="performance"
+    )
+    theatre_hall = models.ForeignKey(
+        TheatreHall,
+        on_delete=models.CASCADE,
+        related_name="performance"
+    )
 
     def __str__(self):
         return f"{self.play.title} in theatre hall: {self.theatre_hall.id}"
@@ -59,9 +67,7 @@ class Performance(models.Model):
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.created_at)
@@ -85,16 +91,14 @@ class Ticket(models.Model):
             raise ValidationError(
                 {
                     "seat": f"seat must be "
-                            f"in available range: "
-                            f"(1, {self.performance.theatre_hall.seats_in_row}), not "
-                            f"{self.seat}"
+                    f"in available range: "
+                    f"(1, {self.performance.theatre_hall.seats_in_row}), not "
+                    f"{self.seat}"
                 }
             )
 
     def __str__(self):
-        return (
-            f"{str(self.performance)} (row: {self.row}, seat: {self.seat})"
-        )
+        return f"{str(self.performance)} (row: {self.row}, seat: {self.seat})"
 
     class Meta:
         unique_together = ("performance", "row", "seat")

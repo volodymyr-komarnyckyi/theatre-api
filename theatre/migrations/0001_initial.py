@@ -15,7 +15,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Actor',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
                 ('first_name', models.CharField(max_length=255)),
                 ('last_name', models.CharField(max_length=255)),
             ],
@@ -23,14 +31,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Genre',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
                 ('name', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='TheatreHall',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
                 ('name', models.CharField(max_length=255)),
                 ('rows', models.PositiveIntegerField()),
                 ('seats_in_row', models.PositiveIntegerField()),
@@ -39,7 +63,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Play',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
                 ('title', models.CharField(max_length=255)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('actors', models.ManyToManyField(blank=True, to='theatre.actor')),
@@ -49,10 +81,32 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Performance',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
                 ('show_time', models.DateTimeField()),
-                ('play', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='performance', to='theatre.play')),
-                ('theatre_hall', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='performance', to='theatre.theatrehall')),
+                (
+                    'play',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='performance',
+                        to='theatre.play'
+                    )
+                ),
+                (
+                    'theatre_hall',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='performance',
+                        to='theatre.theatrehall'
+                    )
+                ),
             ],
         ),
     ]

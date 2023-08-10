@@ -1,7 +1,17 @@
 from rest_framework import viewsets
 
-from theatre.models import Genre, Actor, Play
-from theatre.serializers import GenreSerializer, ActorSerializer, PlaySerializer, PlayListSerializer
+from theatre.models import Genre, Actor, Play, TheatreHall, Performance
+from theatre.serializers import (
+    GenreSerializer,
+    ActorSerializer,
+    TheatreHallSerializer,
+    PlaySerializer,
+    PlayListSerializer,
+    PlayDetailSerializer,
+    PerformanceSerializer,
+    PerformanceListSerializer,
+    PerformanceDetailSerializer
+)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
@@ -12,6 +22,11 @@ class GenreViewSet(viewsets.ModelViewSet):
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+
+
+class TheatreHallViewSet(viewsets.ModelViewSet):
+    queryset = TheatreHall.objects.all()
+    serializer_class = TheatreHallSerializer
 
 
 class PlayViewSet(viewsets.ModelViewSet):
@@ -33,6 +48,30 @@ class PlayViewSet(viewsets.ModelViewSet):
             serializer_class = PlayListSerializer
 
         elif self.action == "retrieve":
-            serializer_class = PlayListSerializer
+            serializer_class = PlayDetailSerializer
+
+        return serializer_class
+
+
+class PerformanceViewSet(viewsets.ModelViewSet):
+    queryset = Performance.objects.all()
+    serializer_class = PerformanceSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        if self.action in ("list", "retrieve"):
+            queryset = queryset.select_related("play", "theatre_hall")
+
+        return queryset
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.action == "list":
+            serializer_class = PerformanceListSerializer
+
+        elif self.action == "retrieve":
+            serializer_class = PerformanceDetailSerializer
 
         return serializer_class
