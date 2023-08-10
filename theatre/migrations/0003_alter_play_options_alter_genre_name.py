@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('theatre', '0002_reservation_ticket'),
+        ("theatre", "0002_reservation_ticket"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='play',
-            options={'ordering': ['title']},
+            name="play",
+            options={"ordering": ["title"]},
         ),
         migrations.AlterField(
-            model_name='genre',
-            name='name',
+            model_name="genre",
+            name="name",
             field=models.CharField(max_length=255, unique=True),
         ),
     ]

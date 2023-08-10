@@ -50,16 +50,8 @@ def movie_image_file_path(instance, filename):
 class Play(models.Model):
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    genres = models.ManyToManyField(
-        Genre,
-        related_name="plays",
-        blank=True
-    )
-    actors = models.ManyToManyField(
-        Actor,
-        related_name="plays",
-        blank=True
-    )
+    genres = models.ManyToManyField(Genre, related_name="plays", blank=True)
+    actors = models.ManyToManyField(Actor, related_name="plays", blank=True)
     image = models.ImageField(null=True, upload_to=movie_image_file_path)
 
     class Meta:
@@ -102,14 +94,10 @@ class Reservation(models.Model):
 
 class Ticket(models.Model):
     performance = models.ForeignKey(
-        Performance,
-        on_delete=models.CASCADE,
-        related_name="tickets"
+        Performance, on_delete=models.CASCADE, related_name="tickets"
     )
     reservation = models.ForeignKey(
-        Reservation,
-        on_delete=models.CASCADE,
-        related_name="tickets"
+        Reservation, on_delete=models.CASCADE, related_name="tickets"
     )
     row = models.IntegerField()
     seat = models.IntegerField()
@@ -120,8 +108,7 @@ class Ticket(models.Model):
             (self.seat, "seat", "seats_in_row"),
         ]:
             count_attrs = getattr(
-                self.performance.theatre_hall,
-                theatre_hall_attr_name
+                self.performance.theatre_hall, theatre_hall_attr_name
             )
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise ValidationError(
@@ -141,7 +128,7 @@ class Ticket(models.Model):
         update_fields=None,
     ):
         self.full_clean()
-        super(Ticket, self).save(force_insert, force_update, using, update_fields)
+        super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return f"{str(self.performance)} (row: {self.row}, seat: {self.seat})"

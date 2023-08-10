@@ -12,12 +12,18 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="play",
             name="actors",
-            field=models.ManyToManyField(related_name="plays", to="theatre.actor"),
+            field=models.ManyToManyField(
+                related_name="plays",
+                to="theatre.actor"
+            ),
         ),
         migrations.AlterField(
             model_name="play",
             name="genres",
-            field=models.ManyToManyField(related_name="plays", to="theatre.genre"),
+            field=models.ManyToManyField(
+                related_name="plays",
+                to="theatre.genre"
+            ),
         ),
         migrations.AlterField(
             model_name="play",

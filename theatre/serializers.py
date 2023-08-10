@@ -67,6 +67,7 @@ class PlayDetailSerializer(PlaySerializer):
             "image",
         )
 
+
 class PlayImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Play

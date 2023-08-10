@@ -44,7 +44,9 @@ def sample_actor(**params):
 
 def sample_performance(**params):
     theatre_hall = TheatreHall.objects.create(
-        name="Blue", rows=20, seats_in_row=20
+        name="Blue",
+        rows=20,
+        seats_in_row=20
     )
 
     defaults = {
@@ -207,7 +209,7 @@ class AuthenticatedCinemaTests(TestCase):
                 "title": "play 1",
                 "genres": f"{genre.id}",
                 "actors": f"{actor.id}"
-            }
+            },
         )
 
         self.assertIn(serializer1.data, res.data)
@@ -241,9 +243,7 @@ class AdminPlayApiTest(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            "test@test.com",
-            "test_pass",
-            is_staff=True
+            "test@test.com", "test_pass", is_staff=True
         )
 
         self.client.force_authenticate(self.user)
@@ -269,7 +269,7 @@ class AdminPlayApiTest(TestCase):
             "title": "play 1",
             "description": "play 1 description",
             "genres": [genre.id],
-            "actors": [actor.id]
+            "actors": [actor.id],
         }
 
         res = self.client.post(PLAY_URL, payload)
