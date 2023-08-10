@@ -31,16 +31,32 @@ class TheatreHallViewSet(viewsets.ModelViewSet):
 
 
 class PlayViewSet(viewsets.ModelViewSet):
-    queryset = Play.objects.all()
+    queryset = Play.objects.prefetch_related("genres", "actors")
     serializer_class = PlaySerializer
+
+    @staticmethod
+    def _params_to_ints(queryset):
+        return [int(str_id) for str_id in queryset.split(",")]
 
     def get_queryset(self):
         queryset = self.queryset
 
-        if self.action in ("list", "retrieve"):
-            queryset = queryset.prefetch_related("genres", "actors")
+        actors = self.request.query_params.get("actors")
+        genres = self.request.query_params.get("genres")
+        title = self.request.query_params.get("title")
 
-        return queryset
+        if actors:
+            actors_ids = self._params_to_ints(actors)
+            queryset = queryset.filter(actors__id__in=actors_ids)
+
+        if genres:
+            genres_ids = self._params_to_ints(genres)
+            queryset = queryset.filter(genres__id__in=genres_ids)
+
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+
+        return queryset.distinct()
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
