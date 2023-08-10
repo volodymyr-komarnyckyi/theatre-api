@@ -50,6 +50,13 @@ class PlayDetailSerializer(PlaySerializer):
     actors = ActorSerializer(many=True, read_only=True)
 
 
+class PlayImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Play
+        fields = ("id", "image")
+
+
 class PerformanceSerializer(serializers.ModelSerializer):
 
     class Meta:
