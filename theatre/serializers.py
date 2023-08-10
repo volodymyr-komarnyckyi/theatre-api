@@ -8,33 +8,29 @@ from theatre.models import (
     TheatreHall,
     Performance,
     Ticket,
-    Reservation
+    Reservation,
 )
 
 
 class ActorSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
 
 class GenreSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Genre
         fields = "__all__"
 
 
 class TheatreHallSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = TheatreHall
         fields = ("id", "name", "rows", "seats_in_row", "capacity")
 
 
 class PlaySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Play
         fields = ("id", "title", "description", "genres", "actors")
@@ -51,23 +47,19 @@ class PlayDetailSerializer(PlaySerializer):
 
 
 class PlayImageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Play
         fields = ("id", "image")
 
 
 class PerformanceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Performance
         fields = ("id", "show_time", "play", "theatre_hall")
 
 
 class PerformanceListSerializer(serializers.ModelSerializer):
-    play_title = serializers.CharField(
-        source="play.title", read_only=True
-    )
+    play_title = serializers.CharField(source="play.title", read_only=True)
     theatre_hall_name = serializers.CharField(
         source="theatre_hall.name", read_only=True
     )
@@ -89,7 +81,6 @@ class PerformanceListSerializer(serializers.ModelSerializer):
 
 
 class TicketSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Ticket
         fields = ("id", "row", "seat", "performance")
@@ -100,7 +91,6 @@ class TicketListSerializer(TicketSerializer):
 
 
 class TicketTakenSeatsSerializer(TicketSerializer):
-
     class Meta:
         model = Ticket
         fields = ("row", "seat")
@@ -110,9 +100,7 @@ class PerformanceDetailSerializer(PerformanceSerializer):
     play = PlayListSerializer(many=False, read_only=True)
     theatre_hall = TheatreHallSerializer(many=False, read_only=True)
     taken_places = TicketTakenSeatsSerializer(
-        source="tickets",
-        many=True,
-        read_only=True
+        source="tickets", many=True, read_only=True
     )
 
     class Meta:
