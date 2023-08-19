@@ -1,0 +1,14 @@
+asgiref==3.6.0
+Django==4.1.6
+flake8==6.1.0
+greenlet==2.0.2
+mccabe==0.7.0
+pycodestyle==2.11.0
+pyflakes==3.1.0
+python-dotenv==1.0.0
+pyzmq==25.1.1
+rm==2020.12.3
+scoop==0.7.2.0
+sqlparse==0.4.3
+tzdata==2022.7
+values==2020.12.3
