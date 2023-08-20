@@ -62,10 +62,17 @@ TEMPLATES = [
 WSGI_APPLICATION = "theatre_service.wsgi.application"
 
 DATABASES = {
+    "postgres": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+    },
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -99,8 +106,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/vol/web/media/"
+
+MEDIA_ROOT = BASE_DIR / "/vol/web/media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
